@@ -7,8 +7,8 @@ This API simulates a real-time data feed system that mimics database replication
 ## Architecture Overview
 
 ```
-┌─────────┐    30s     ┌─────────┐   0-5min   ┌─────────┐          ┌─────────┐
-│ Feed A  │ ────────► │ Delay B │ ─────────► │  Boot   │ ────────► │  Live   │
+┌─────────┐    30s    ┌─────────┐   0-5min   ┌─────────┐          ┌─────────┐
+│ Feed A  │ ────────► │ Delay B │ ─────────► │  Boot   │ ────────►│  Live   │
 │(Source) │           │(Replica)│  (random)  │(Buffer) │          │(Reader) │
 └─────────┘           └─────────┘            └─────────┘          └─────────┘
 ```
