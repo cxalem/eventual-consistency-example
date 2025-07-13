@@ -13,5 +13,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example listening at ${port}`);
+  console.log(`Example listening at ${port}. Awaiting for the first data to load!`);
 });
