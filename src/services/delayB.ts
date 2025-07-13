@@ -6,7 +6,16 @@ class DelayB extends EventEmitter {
     super();
     feedA.on("new", (records) => {
       const lag = Math.random() * maxLagMs;
+      const lagSeconds = Math.round(lag / 1000);
+      
+      console.log(`⏳ [DelayB] RECEIVED from FeedA at ${new Date().toLocaleTimeString()}`);
+      console.log(`   Applying random delay: ${lagSeconds}s`);
+      console.log(`   Records count: ${Object.keys(records).length}`);
+      
       setTimeout(() => {
+        console.log(`✅ [DelayB] READY after ${lagSeconds}s delay at ${new Date().toLocaleTimeString()}`);
+        console.log(`   Emitting ${Object.keys(records).length} records to Boot`);
+        console.log(`   Records content in DelayB:`, records);
         this.emit("ready", records);
       }, lag);
     });

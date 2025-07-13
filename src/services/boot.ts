@@ -15,19 +15,31 @@ class Boot extends EventEmitter {
     const mode = getMode();
     try {
       delayB.on("ready", (records) => {
+        console.log(`📦 [Boot] RECEIVED from DelayB at ${new Date().toLocaleTimeString()}`);
+        console.log(`   Previous buffer size: ${Object.keys(this.bootBuffer).length}`);
+        console.log(`   New records size: ${Object.keys(records).length}`);
+        
         this.bootBuffer = records;
+        
+        console.log(`   Buffer updated with ${Object.keys(this.bootBuffer).length} total records`);
+        
         if (!this.isFirstLoadComplete) {
           this.isFirstLoadComplete = true;
+          console.log(`🎉 [Boot] FIRST LOAD COMPLETE at ${new Date().toLocaleTimeString()}`);
+          console.log(`   Transitioning from ${mode} to LIVE mode`);
+          console.log(`   Records in first load:`, this.bootBuffer);
           this.emit("first_load", this.bootBuffer);
-          console.log("First load complete, changing to LIVE: ", this.bootBuffer);
+        } else {
+          console.log(`🔄 [Boot] UPDATING existing buffer (not first load)`);
         }
 
         if (mode === "BOOT") {
           setMode("LIVE");
+          console.log(`   ✅ Mode changed to LIVE`);
         }
       });
     } catch (error) {
-      console.log("Error during the first load");
+      console.log(`❌ [Boot] Error during the first load:`, error);
       setMode("BOOT");
     }
   }
@@ -44,9 +56,11 @@ class Boot extends EventEmitter {
 
   async getData() {
     if (!this.isFirstLoadComplete) {
+      console.log(`⏳ [Boot] Waiting for first load to complete...`);
       await this.getFirstLoad();
     }
 
+    console.log(`📊 [Boot] RETURNING data: ${Object.keys(this.bootBuffer).length} records`);
     return this.bootBuffer;
   }
 }
