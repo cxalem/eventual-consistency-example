@@ -4,11 +4,15 @@ import feedA from "./feedA.js";
 class DelayB extends EventEmitter {
   constructor(maxLagMs = 5 * 60_000) {
     super();
-    feedA.on("new", (records) => {
-      const lag = Math.random() * maxLagMs;
-      setTimeout(() => this.emit("ready", records), lag);
-    });
+    const lag = Math.random() * maxLagMs;
+    setTimeout(
+      () =>
+        feedA.on("new", (records) => {
+          this.emit("ready", records);
+        }),
+      lag
+    );
   }
 }
 
-export default new DelayB;
+export default new DelayB();
