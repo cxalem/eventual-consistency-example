@@ -183,12 +183,12 @@ This simulation is ideal for:
 
 ### Installation
 ```bash
-npm install
+pnpm i
 ```
 
 ### Running
 ```bash
-npm run dev
+pnpm dev
 ```
 
 The system will automatically:
